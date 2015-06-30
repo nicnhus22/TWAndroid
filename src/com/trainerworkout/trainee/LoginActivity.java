@@ -4,9 +4,13 @@ package com.trainerworkout.trainee;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import retrofit.client.Client;
+import retrofit.client.OkClient;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import android.app.ActionBar;
@@ -26,6 +30,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.trainerworkout.trainee.gson.DeserializeUser;
+import com.trainerworkout.trainee.helper.HttpClientSingleton;
 import com.trainerworkout.trainee.model.rest.LoginModel;
 import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.notification.ToastNotification;
@@ -52,7 +57,10 @@ public class LoginActivity extends Activity {
 		hideActionBar();
 		// Set view
 		setContentView(R.layout.activity_login);
-		
+		// Create Http Client singleton
+		createOkHttpClient();
+		final OkClient client = HttpClientSingleton.getInstance();
+				
 		Button login_button = (Button)findViewById(R.id.button1);
 		login_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -64,6 +72,7 @@ public class LoginActivity extends Activity {
             	RestAdapter restAdapter = new RestAdapter.Builder()
 	    			.setLogLevel(RestAdapter.LogLevel.FULL)
 	    			.setEndpoint(URLQueries.SERVER_ZONE)
+	    			.setClient(client)
 	    			.build(); 
 
 	    		TWService service = restAdapter.create(TWService.class);
@@ -182,5 +191,9 @@ public class LoginActivity extends Activity {
 	private void stopLogoFadeInOut(){
 		ImageView logo = (ImageView)findViewById(R.id.first_drawer_image);
 		logo.setAnimation(null);
+	}
+	
+	private void createOkHttpClient(){
+		new HttpClientSingleton();
 	}
 }
