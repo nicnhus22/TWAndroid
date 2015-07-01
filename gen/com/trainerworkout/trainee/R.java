@@ -1388,7 +1388,6 @@ containing a value of this type.
     }
     public static final class id {
         public static final int LinearLayout1=0x7f060047;
-        public static final int RelativeLayout1=0x7f06006d;
         public static final int action_bar=0x7f060027;
         public static final int action_bar_activity_content=0x7f060020;
         public static final int action_bar_container=0x7f060026;
@@ -1400,7 +1399,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f060021;
         public static final int action_menu_presenter=0x7f060022;
         public static final int action_mode_close_button=0x7f06002f;
-        public static final int action_settings=0x7f060070;
+        public static final int action_settings=0x7f060071;
         public static final int activity_chooser_view_content=0x7f060030;
         public static final int always=0x7f060016;
         public static final int beginning=0x7f06001c;
@@ -1498,7 +1497,9 @@ containing a value of this type.
         public static final int up=0x7f06002c;
         public static final int useLogo=0x7f06000e;
         public static final int withText=0x7f060017;
-        public static final int workout_item_name=0x7f06006f;
+        public static final int workout_item_name=0x7f060070;
+        public static final int workout_list_loader=0x7f06006f;
+        public static final int workout_list_view=0x7f06006d;
         public static final int workout_name_list=0x7f06006e;
     }
     public static final class integer {

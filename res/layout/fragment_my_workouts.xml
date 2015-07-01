@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/RelativeLayout1"
+    android:id="@+id/workout_list_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e5e5e5" >
@@ -16,7 +16,15 @@
         android:divider="#FFF"
         android:dividerHeight="1dp"
         android:textAlignment="center"
-        android:visibility="hidden" >
+        android:visibility="gone" >
     </ListView>
+
+    <ImageView
+        android:id="@+id/workout_list_loader"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/tw" />
 
 </RelativeLayout>

@@ -378,7 +378,6 @@ int drawable profile 0x7f020098
 int drawable signin 0x7f020099
 int drawable tw 0x7f02009a
 int id LinearLayout1 0x7f060047
-int id RelativeLayout1 0x7f06006d
 int id action_bar 0x7f060027
 int id action_bar_activity_content 0x7f060020
 int id action_bar_container 0x7f060026
@@ -390,7 +389,7 @@ int id action_context_bar 0x7f060028
 int id action_menu_divider 0x7f060021
 int id action_menu_presenter 0x7f060022
 int id action_mode_close_button 0x7f06002f
-int id action_settings 0x7f060070
+int id action_settings 0x7f060071
 int id activity_chooser_view_content 0x7f060030
 int id always 0x7f060016
 int id beginning 0x7f06001c
@@ -488,7 +487,9 @@ int id txtLabel 0x7f06006c
 int id up 0x7f06002c
 int id useLogo 0x7f06000e
 int id withText 0x7f060017
-int id workout_item_name 0x7f06006f
+int id workout_item_name 0x7f060070
+int id workout_list_loader 0x7f06006f
+int id workout_list_view 0x7f06006d
 int id workout_name_list 0x7f06006e
 int integer abc_max_action_buttons 0x7f0c0000
 int layout abc_action_bar_decor 0x7f030000

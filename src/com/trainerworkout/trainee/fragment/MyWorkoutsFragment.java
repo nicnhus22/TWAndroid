@@ -10,24 +10,20 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.trainerworkout.trainee.R;
-import com.trainerworkout.trainee.adapter.NavDrawerListAdapter;
 import com.trainerworkout.trainee.adapter.WorkoutListAdapter;
-import com.trainerworkout.trainee.gson.DeserializeUser;
 import com.trainerworkout.trainee.gson.DeserializeWorkoutHolder;
-import com.trainerworkout.trainee.helper.ApiRequestInterceptor;
+import com.trainerworkout.trainee.helper.Animations;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
-import com.trainerworkout.trainee.model.rest.LoginModel;
-import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.model.rest.WorkoutHolderModel;
 import com.trainerworkout.trainee.model.rest.WorkoutsModel;
 import com.trainerworkout.trainee.resource.query.URLQueries;
@@ -45,7 +41,10 @@ public class MyWorkoutsFragment extends Fragment {
             Bundle savedInstanceState) {
   
         View rootView = inflater.inflate(R.layout.fragment_my_workouts, container, false);
-          
+        
+        final ImageView loader_logo = (ImageView)rootView.findViewById(R.id.workout_list_loader);
+        Animations.startLogoFadeInOut(loader_logo);
+        
         RestAdapter restAdapter = new RestAdapter.Builder()
         	.setClient(HttpClientSingleton.getInstance())
 			.setLogLevel(RestAdapter.LogLevel.FULL)
@@ -63,6 +62,10 @@ public class MyWorkoutsFragment extends Fragment {
 					
 					adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workoutModels);
 					workoutList.setAdapter(adapter);
+					
+					Animations.stopLogoFadeInOut(loader_logo);
+					Animations.hideView(loader_logo);
+					Animations.slideView(workoutList);
 				}
 			}
 			@Override
