@@ -258,7 +258,10 @@ public class MainActivity extends FragmentActivity {
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
 			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
+			if(position == 0)
+				setTitle(navMenuTitles[position]);
+			else
+				setTitle(navMenuTitles[position-1]);
 			mDrawerLayout.closeDrawer(mDrawerList);
 		} else {
 			// error in creating fragment

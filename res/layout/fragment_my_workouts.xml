@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e5e5e5">
-     
-    <TextView
-        android:id="@+id/txtLabel"
-        android:layout_width="wrap_content"
+    android:background="#e5e5e5" >
+
+    <ListView
+        android:id="@+id/workout_name_list"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="16dp"
-        android:text="My Workouts View"/>
-     
-     
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/light_green"
+        android:divider="#FFF"
+        android:dividerHeight="1dp"
+        android:textAlignment="center"
+        android:visibility="hidden" >
+    </ListView>
+
 </RelativeLayout>

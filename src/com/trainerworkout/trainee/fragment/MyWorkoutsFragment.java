@@ -14,11 +14,14 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.trainerworkout.trainee.R;
+import com.trainerworkout.trainee.adapter.NavDrawerListAdapter;
+import com.trainerworkout.trainee.adapter.WorkoutListAdapter;
 import com.trainerworkout.trainee.gson.DeserializeUser;
 import com.trainerworkout.trainee.gson.DeserializeWorkoutHolder;
 import com.trainerworkout.trainee.helper.ApiRequestInterceptor;
@@ -32,6 +35,9 @@ import com.trainerworkout.trainee.service.TWService;
  
 public class MyWorkoutsFragment extends Fragment {
      
+	private WorkoutListAdapter adapter;
+	private ListView workoutList;
+	
     public MyWorkoutsFragment(){}
      
     @Override
@@ -50,7 +56,14 @@ public class MyWorkoutsFragment extends Fragment {
 		service.fetchWorkouts(219, new Callback<WorkoutsModel>() {
 			@Override
 			public void success(WorkoutsModel model, Response response) {
-				List<WorkoutHolderModel> workoutModel = deserializeWorkoutHolder(response);
+				if(model.getStatus().equals("ok")){					
+					List<WorkoutHolderModel> workoutModels = deserializeWorkoutHolder(response);
+					
+					workoutList = (ListView)getActivity().findViewById(R.id.workout_name_list);
+					
+					adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workoutModels);
+					workoutList.setAdapter(adapter);
+				}
 			}
 			@Override
 			public void failure(RetrofitError error) {
