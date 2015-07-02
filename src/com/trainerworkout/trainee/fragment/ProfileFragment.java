@@ -1,7 +1,5 @@
 package com.trainerworkout.trainee.fragment;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -106,14 +104,16 @@ public class ProfileFragment extends Fragment {
 		            String filePath = cursor.getString(columnIndex);
 		            cursor.close();
 
-		            BitmapFactory.Options options;
-		            options = new BitmapFactory.Options();
-		            options.inSampleSize = 2;
-		            Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
+		            Bitmap bitmap = BitmapFactory.decodeFile(filePath);
 		            
-		            //Bitmap result = BitmapFactory.decodeFile(filePath);
-		            //RoundedImage profile_image = new RoundedImage(result);
-		            profile_edit_image.setImageBitmap(bitmap);
+		            int width = bitmap.getWidth();
+		            int height = bitmap.getHeight();
+		            Bitmap cropImg = null;
+		            int scale = (width > height ? height : width);
+		            cropImg = Bitmap.createBitmap(bitmap, 0, 0, scale, scale);
+		            
+		            RoundedImage profile_image = new RoundedImage(cropImg);
+		            profile_edit_image.setImageDrawable(profile_image);
 		        }
 		    }
 		}

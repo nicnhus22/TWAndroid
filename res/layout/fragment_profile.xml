@@ -12,13 +12,15 @@
 
 	    <ImageView
 	        android:id="@+id/profile_edit_image"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
+	        android:layout_width="120dp"
+	        android:layout_height="120dp"
 	        android:layout_alignParentTop="true"
 	        android:layout_centerHorizontal="true"
 	        android:layout_marginTop="30dp"
 	        android:adjustViewBounds="true"
 	        android:maxHeight="120dp"
+	        android:scaleType="centerCrop"
+        	android:layout_gravity="center"
 	        android:maxWidth="120dp"
 	        android:minHeight="120dp"
 	        android:minWidth="120dp"
@@ -60,8 +62,7 @@
 	        android:ems="10"
 	        android:inputType="textPersonName"
 	        android:textColor="#FFF" >
-	
-	        <requestFocus />
+
 	    </EditText>
 	
 	    <EditText
