@@ -4,12 +4,9 @@ package com.trainerworkout.trainee;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
-import retrofit.client.Client;
 import retrofit.client.OkClient;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
@@ -31,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.trainerworkout.trainee.gson.DeserializeUser;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
+import com.trainerworkout.trainee.helper.LoggedUser;
 import com.trainerworkout.trainee.model.rest.LoginModel;
 import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.notification.ToastNotification;
@@ -135,6 +133,7 @@ public class LoginActivity extends Activity {
 		
 		String json = new String(((TypedByteArray) response.getBody()).getBytes());
 		UserModel user = gson.fromJson(json, UserModel.class);
+		LoggedUser.setUser(user);
 		
 		new ToastNotification.Builder(this.getApplicationContext())
 			.withNotification(ToastNotification.SUCCESS_LOGIN.concat(user.getFirstName()))

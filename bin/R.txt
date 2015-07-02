@@ -389,7 +389,7 @@ int id action_context_bar 0x7f060028
 int id action_menu_divider 0x7f060021
 int id action_menu_presenter 0x7f060022
 int id action_mode_close_button 0x7f06002f
-int id action_settings 0x7f060071
+int id action_settings 0x7f060079
 int id activity_chooser_view_content 0x7f060030
 int id always 0x7f060016
 int id beginning 0x7f06001c
@@ -457,10 +457,17 @@ int id never 0x7f060014
 int id none 0x7f06001b
 int id normal 0x7f060001
 int id picker_subtitle 0x7f060060
+int id profile_edit_email 0x7f060075
+int id profile_edit_first_name 0x7f060073
+int id profile_edit_image 0x7f060071
+int id profile_edit_last_name 0x7f060074
+int id profile_edit_password 0x7f060076
+int id profile_edit_save 0x7f060077
 int id progress_circular 0x7f060023
 int id progress_horizontal 0x7f060024
 int id radio 0x7f06003a
 int id right 0x7f06000b
+int id scrollView1 0x7f060070
 int id search_badge 0x7f06003d
 int id search_bar 0x7f06003c
 int id search_button 0x7f06003e
@@ -480,6 +487,7 @@ int id split_action_bar 0x7f060029
 int id standard 0x7f060003
 int id submit_area 0x7f060044
 int id tabMode 0x7f06000d
+int id textView1 0x7f060072
 int id title 0x7f060036
 int id top 0x7f060008
 int id top_action_bar 0x7f06002b
@@ -487,7 +495,7 @@ int id txtLabel 0x7f06006c
 int id up 0x7f06002c
 int id useLogo 0x7f06000e
 int id withText 0x7f060017
-int id workout_item_name 0x7f060070
+int id workout_item_name 0x7f060078
 int id workout_list_loader 0x7f06006f
 int id workout_list_view 0x7f06006d
 int id workout_name_list 0x7f06006e

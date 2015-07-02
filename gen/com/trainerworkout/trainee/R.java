@@ -1399,7 +1399,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f060021;
         public static final int action_menu_presenter=0x7f060022;
         public static final int action_mode_close_button=0x7f06002f;
-        public static final int action_settings=0x7f060071;
+        public static final int action_settings=0x7f060079;
         public static final int activity_chooser_view_content=0x7f060030;
         public static final int always=0x7f060016;
         public static final int beginning=0x7f06001c;
@@ -1467,10 +1467,17 @@ containing a value of this type.
         public static final int none=0x7f06001b;
         public static final int normal=0x7f060001;
         public static final int picker_subtitle=0x7f060060;
+        public static final int profile_edit_email=0x7f060075;
+        public static final int profile_edit_first_name=0x7f060073;
+        public static final int profile_edit_image=0x7f060071;
+        public static final int profile_edit_last_name=0x7f060074;
+        public static final int profile_edit_password=0x7f060076;
+        public static final int profile_edit_save=0x7f060077;
         public static final int progress_circular=0x7f060023;
         public static final int progress_horizontal=0x7f060024;
         public static final int radio=0x7f06003a;
         public static final int right=0x7f06000b;
+        public static final int scrollView1=0x7f060070;
         public static final int search_badge=0x7f06003d;
         public static final int search_bar=0x7f06003c;
         public static final int search_button=0x7f06003e;
@@ -1490,6 +1497,7 @@ containing a value of this type.
         public static final int standard=0x7f060003;
         public static final int submit_area=0x7f060044;
         public static final int tabMode=0x7f06000d;
+        public static final int textView1=0x7f060072;
         public static final int title=0x7f060036;
         public static final int top=0x7f060008;
         public static final int top_action_bar=0x7f06002b;
@@ -1497,7 +1505,7 @@ containing a value of this type.
         public static final int up=0x7f06002c;
         public static final int useLogo=0x7f06000e;
         public static final int withText=0x7f060017;
-        public static final int workout_item_name=0x7f060070;
+        public static final int workout_item_name=0x7f060078;
         public static final int workout_list_loader=0x7f06006f;
         public static final int workout_list_view=0x7f06006d;
         public static final int workout_name_list=0x7f06006e;

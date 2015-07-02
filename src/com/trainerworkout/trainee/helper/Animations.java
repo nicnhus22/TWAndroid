@@ -40,24 +40,13 @@ public class Animations {
 	}
 	
 	/**
-	 * List view slide down
+	 * List view fade in
 	 */
-	public static void slideView(final View view){
+	public static void fadeView(final View view){
 		// Prepare the View for the animation
 		view.setVisibility(View.VISIBLE);
 		view.setAlpha(0.0f);
-
-		// Start the animation
-		view.animate()
-		    .translationY(view.getHeight())
-		    .alpha(1.0f)
-		    .setListener(new AnimatorListenerAdapter() {
-		        @Override
-		        public void onAnimationEnd(Animator animation) {
-		            super.onAnimationEnd(animation);
-		            view.setVisibility(View.VISIBLE);
-		        }
-		    });
+		view.animate().alpha(1.0f);
 	}
 	
 	

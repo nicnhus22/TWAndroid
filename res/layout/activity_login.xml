@@ -43,7 +43,8 @@
             android:paddingLeft="60dp"
             android:paddingRight="20dp"
             android:textColor="#b8b6b5"
-            android:textColorHint="#b8b6b5" />
+            android:textColorHint="#b8b6b5"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/login_password"
@@ -58,7 +59,8 @@
             android:paddingLeft="60dp"
             android:paddingRight="20dp"
             android:textColor="#b8b6b5"
-            android:textColorHint="#b8b6b5" >
+            android:textColorHint="#b8b6b5"
+            android:inputType="textPassword" >
 
             <requestFocus />
         </EditText>

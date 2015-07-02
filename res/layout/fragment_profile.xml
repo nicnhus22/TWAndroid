@@ -1,17 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#e5e5e5">
-     
-    <TextView
-        android:id="@+id/txtLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="16dp"
-        android:text="Profile View"/>
-     
-     
-</RelativeLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_green" >
+    
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="@color/light_green" >
+
+	    <ImageView
+	        android:id="@+id/profile_edit_image"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="30dp"
+	        android:adjustViewBounds="true"
+	        android:maxHeight="120dp"
+	        android:maxWidth="120dp"
+	        android:minHeight="120dp"
+	        android:minWidth="120dp"
+	        android:src="@drawable/tw" />
+	
+	    <TextView
+	        android:id="@+id/textView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/profile_edit_image"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="14dp"
+	        android:text="tap the image to upload a new picture"
+	        android:textAppearance="?android:attr/textAppearanceSmall"
+	        android:textColor="#FFF" />
+	
+	    <EditText
+	        android:id="@+id/profile_edit_first_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/textView1"
+	        android:layout_marginLeft="15dp"
+	        android:layout_marginRight="15dp"
+	        android:layout_marginTop="15dp"
+	        android:ems="10"
+	        android:inputType="textPersonName"
+	        android:textColor="#FFF" />
+	
+	    <EditText
+	        android:id="@+id/profile_edit_last_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/profile_edit_first_name"
+	        android:layout_alignRight="@+id/profile_edit_first_name"
+	        android:layout_below="@+id/profile_edit_first_name"
+	        android:layout_marginTop="15dp"
+	        android:ems="10"
+	        android:inputType="textPersonName"
+	        android:textColor="#FFF" >
+	
+	        <requestFocus />
+	    </EditText>
+	
+	    <EditText
+	        android:id="@+id/profile_edit_email"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/profile_edit_last_name"
+	        android:layout_alignRight="@+id/profile_edit_last_name"
+	        android:layout_below="@+id/profile_edit_last_name"
+	        android:layout_marginTop="15dp"
+	        android:ems="10"
+	        android:inputType="textEmailAddress"
+	        android:textColor="#FFF" />
+	
+	    <EditText
+	        android:id="@+id/profile_edit_password"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/profile_edit_email"
+	        android:layout_alignRight="@+id/profile_edit_email"
+	        android:layout_below="@+id/profile_edit_email"
+	        android:layout_marginBottom="15dp"
+	        android:layout_marginTop="15dp"
+	        android:ems="10"
+	        android:inputType="textPassword"
+	        android:textColor="#FFF" />
+	
+	    <Button
+	        android:id="@+id/profile_edit_save"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/profile_edit_image"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignRight="@+id/profile_edit_image"
+	        android:layout_below="@id/profile_edit_password"
+	        android:text="Save" />
+	     
+	</RelativeLayout>
+</ScrollView>

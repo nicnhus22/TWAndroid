@@ -24,6 +24,7 @@ import com.trainerworkout.trainee.adapter.WorkoutListAdapter;
 import com.trainerworkout.trainee.gson.DeserializeWorkoutHolder;
 import com.trainerworkout.trainee.helper.Animations;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
+import com.trainerworkout.trainee.helper.LoggedUser;
 import com.trainerworkout.trainee.model.rest.WorkoutHolderModel;
 import com.trainerworkout.trainee.model.rest.WorkoutsModel;
 import com.trainerworkout.trainee.resource.query.URLQueries;
@@ -52,7 +53,7 @@ public class MyWorkoutsFragment extends Fragment {
 			.build(); 
 
         TWService service = restAdapter.create(TWService.class);
-		service.fetchWorkouts(219, new Callback<WorkoutsModel>() {
+		service.fetchWorkouts(LoggedUser.getUser().getId(), new Callback<WorkoutsModel>() {
 			@Override
 			public void success(WorkoutsModel model, Response response) {
 				if(model.getStatus().equals("ok")){					
@@ -65,7 +66,7 @@ public class MyWorkoutsFragment extends Fragment {
 					
 					Animations.stopLogoFadeInOut(loader_logo);
 					Animations.hideView(loader_logo);
-					Animations.slideView(workoutList);
+					Animations.fadeView(workoutList);
 				}
 			}
 			@Override

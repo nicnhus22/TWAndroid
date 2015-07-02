@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.trainerworkout.trainee.R;
 import com.trainerworkout.trainee.helper.DownloadSetImageTask;
+import com.trainerworkout.trainee.helper.DownloadSetImageTask.ImageType;
 import com.trainerworkout.trainee.model.drawer.NavDrawerFirstItem;
 import com.trainerworkout.trainee.model.drawer.NavDrawerItem;
  
@@ -55,7 +56,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
 	        TextView txtTitle = (TextView) convertView.findViewById(R.id.first_drawer_first_name);
 	          
 	          
-	        new DownloadSetImageTask(imgIcon, this.context, true)
+	        new DownloadSetImageTask(imgIcon, this.context, true, ImageType.MISSING_PROFILE)
             	.execute(((NavDrawerFirstItem)navDrawerItems.get(position)).getProfileImage());
 	        
 	        txtTitle.setText(((NavDrawerFirstItem)navDrawerItems.get(position)).getFirstName());
