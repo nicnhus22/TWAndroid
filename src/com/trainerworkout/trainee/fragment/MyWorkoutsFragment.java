@@ -9,10 +9,12 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -25,8 +27,11 @@ import com.trainerworkout.trainee.gson.DeserializeWorkoutHolder;
 import com.trainerworkout.trainee.helper.Animations;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
 import com.trainerworkout.trainee.helper.LoggedUser;
+import com.trainerworkout.trainee.helper.SelectedWorkout;
 import com.trainerworkout.trainee.model.rest.WorkoutHolderModel;
+import com.trainerworkout.trainee.model.rest.WorkoutModel;
 import com.trainerworkout.trainee.model.rest.WorkoutsModel;
+import com.trainerworkout.trainee.notification.ToastNotification;
 import com.trainerworkout.trainee.resource.query.URLQueries;
 import com.trainerworkout.trainee.service.TWService;
  
@@ -34,6 +39,7 @@ public class MyWorkoutsFragment extends Fragment {
      
 	private WorkoutListAdapter adapter;
 	private ListView workoutList;
+	private WorkoutModel workoutModel;
 	
     public MyWorkoutsFragment(){}
      
@@ -63,6 +69,7 @@ public class MyWorkoutsFragment extends Fragment {
 					
 					adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workoutModels);
 					workoutList.setAdapter(adapter);
+					workoutList.setOnItemClickListener(new WorkoutClickListener(workoutModels));
 					
 					Animations.stopLogoFadeInOut(loader_logo);
 					Animations.hideView(loader_logo);
@@ -74,10 +81,14 @@ public class MyWorkoutsFragment extends Fragment {
 				System.out.println(error);
 			}
 		});
-//        
-        return rootView;
+
+		return rootView;
     }
     
+    /**
+     * @param response
+     * @return
+     */
     private List<WorkoutHolderModel> deserializeWorkoutHolder(Response response){
     	// Build workout holder model
     	Type listType = new TypeToken<List<WorkoutHolderModel>>(){}.getType();
@@ -93,7 +104,31 @@ public class MyWorkoutsFragment extends Fragment {
 			e.printStackTrace();
 		}
 		
-		
 		return workoutHolder;
+    }
+    
+    /**
+     * WIll take the workout list as input and trigger the corresponding
+     * action when clicked: show workout fragment.
+     */
+    private class WorkoutClickListener implements ListView.OnItemClickListener {
+    	
+    	private List<WorkoutHolderModel> workoutModels;
+    	
+    	public WorkoutClickListener(List<WorkoutHolderModel> workoutModels){
+    		this.workoutModels = workoutModels;
+    	}
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			
+			SelectedWorkout.setSelectedWorkout(workoutModels.get(position).getWorkout());
+			
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.frame_container, new WorkoutFragment()).commit();
+		}
+    	
     }
 }

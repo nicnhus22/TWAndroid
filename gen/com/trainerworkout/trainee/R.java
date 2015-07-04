@@ -1501,13 +1501,13 @@ containing a value of this type.
         public static final int title=0x7f060036;
         public static final int top=0x7f060008;
         public static final int top_action_bar=0x7f06002b;
-        public static final int txtLabel=0x7f06006c;
         public static final int up=0x7f06002c;
         public static final int useLogo=0x7f06000e;
         public static final int withText=0x7f060017;
         public static final int workout_item_name=0x7f060078;
         public static final int workout_list_loader=0x7f06006f;
         public static final int workout_list_view=0x7f06006d;
+        public static final int workout_name=0x7f06006c;
         public static final int workout_name_list=0x7f06006e;
     }
     public static final class integer {
@@ -1583,8 +1583,9 @@ containing a value of this type.
         public static final int fragment_main=0x7f03002c;
         public static final int fragment_my_workouts=0x7f03002d;
         public static final int fragment_profile=0x7f03002e;
-        public static final int support_simple_spinner_dropdown_item=0x7f03002f;
-        public static final int workout_item=0x7f030030;
+        public static final int fragment_workout=0x7f03002f;
+        public static final int support_simple_spinner_dropdown_item=0x7f030030;
+        public static final int workout_item=0x7f030031;
     }
     public static final class menu {
         public static final int main=0x7f0e0000;
