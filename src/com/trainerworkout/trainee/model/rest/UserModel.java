@@ -1,28 +1,85 @@
 package com.trainerworkout.trainee.model.rest;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "UserModel")
 public class UserModel {
-
-	int id, admin, appInstalled, demoApp;
 	
-    String firstName, lastName,
-    	email,phone,
-	    address,street,suite,city,province,country,
-	    userType, fbUsername,
-	    created_at,deleted_at,updated_at,
-	    timezone,
-	    thumb,image,
-	    birthday,biography,
-	    certifications,specialities,past_experience,
-	    word,videoLink,videoKey,demoWeb,
-	    stripeCheckoutToken,
-	    typeOfCreditCard,
-	    fourLastDigits,
-	    gender,
-	    lastLoginApp,
-	    lastLogin;
-//	String weight[],
-//	    objectives[];
-
+	@DatabaseField(canBeNull = false, id = true)
+	int id;
+	@DatabaseField(canBeNull = true, defaultValue = "0")
+	int admin;
+	@DatabaseField(canBeNull = true, defaultValue = "0")
+	int appInstalled;
+	@DatabaseField(canBeNull = true, defaultValue = "0")
+	int demoApp;
+	@DatabaseField(canBeNull = true)
+    String firstName;
+	@DatabaseField(canBeNull = true)
+    String lastName;
+	@DatabaseField(canBeNull = true)
+    String email;
+	@DatabaseField(canBeNull = true)
+    String phone;
+	@DatabaseField(canBeNull = true)
+    String address;
+	@DatabaseField(canBeNull = true)
+    String street;
+	@DatabaseField(canBeNull = true)
+    String suite;
+	@DatabaseField(canBeNull = true)
+    String city;
+	@DatabaseField(canBeNull = true)
+    String province;
+	@DatabaseField(canBeNull = true)
+    String country;
+	@DatabaseField(canBeNull = true)
+    String userType;
+	@DatabaseField(canBeNull = true)
+    String fbUsername;
+	@DatabaseField(canBeNull = true)
+    String created_at;
+	@DatabaseField(canBeNull = true)
+	String deleted_at;
+	@DatabaseField(canBeNull = true)
+	String updated_at;
+	@DatabaseField(canBeNull = true, defaultValue = "America/New_York")
+	String timezone;
+	@DatabaseField(canBeNull = true)
+	String thumb;
+	@DatabaseField(canBeNull = true)
+	String image;
+	@DatabaseField(canBeNull = true)
+	String birthday;
+	@DatabaseField(canBeNull = true)
+	String biography;
+	@DatabaseField(canBeNull = true)
+	String certifications;
+	@DatabaseField(canBeNull = true)
+	String specialities;
+	@DatabaseField(canBeNull = true)
+	String past_experience;
+	@DatabaseField(canBeNull = true)
+	String word;
+	@DatabaseField(canBeNull = true)
+    String videoLink;
+	@DatabaseField(canBeNull = true)
+    String videoKey;
+	@DatabaseField(canBeNull = true)
+    String demoWeb;
+	@DatabaseField(canBeNull = true)
+    String stripeCheckoutToken;
+	@DatabaseField(canBeNull = true)
+    String typeOfCreditCard;
+	@DatabaseField(canBeNull = true)
+    String fourLastDigits;
+	@DatabaseField(canBeNull = true)
+    String gender;
+	@DatabaseField(canBeNull = true)
+    String lastLoginApp;
+	@DatabaseField(canBeNull = true)
+    String lastLogin;
     
     /**
      * 
@@ -116,12 +173,10 @@ public class UserModel {
 		this.gender = gender;
 		this.lastLoginApp = lastLoginApp;
 		this.lastLogin = lastLogin;
-//		this.weight = weight;
-//		this.objectives = objectives;
 	}
 
 	public UserModel() {
-		// TODO Auto-generated constructor stub
+		// ORM Lite requires it
 	}
 
 	/**
@@ -640,35 +695,6 @@ public class UserModel {
 	 */
 	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
-	}
-
-//	/**
-//	 * @return the weight
-//	 */
-//	public String[] getWeight() {
-//		return weight;
-//	}
-//
-//	/**
-//	 * @param weight the weight to set
-//	 */
-//	public void setWeight(String weight[]) {
-//		this.weight = weight;
-//	}
-//
-//	/**
-//	 * @return the objectives
-//	 */
-//	public String[] getObjectives() {
-//		return objectives;
-//	}
-//
-//	/**
-//	 * @param objectives the objectives to set
-//	 */
-//	public void setObjectives(String objectives[]) {
-//		this.objectives = objectives;
-//	}
-    
+	}    
     
 }

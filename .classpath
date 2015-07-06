@@ -10,5 +10,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/gson-2.2.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/okio-1.4.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/okhttp-2.3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ormlite-android-4.48.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ormlite-core-4.48.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

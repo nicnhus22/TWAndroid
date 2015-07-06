@@ -1,34 +1,56 @@
 package com.trainerworkout.trainee.model.rest;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "WorkoutModel")
 public class WorkoutModel {
-
-//	@SerializedName("id")
-//	@Expose
+	
+	@DatabaseField(canBeNull = false, id = true)
 	private int id;
+	@DatabaseField(canBeNull = true)
 	private String name;
+	@DatabaseField(canBeNull = true)
     private int categoryId;
+	@DatabaseField(canBeNull = false, defaultValue = "0")
     private int  shares;
+	@DatabaseField(canBeNull = true)
     private int views;
+	@DatabaseField(canBeNull = true)
     private String objectives;
+	@DatabaseField(canBeNull = true)
     private String description;
+	@DatabaseField(canBeNull = true)
     private String type;
+	@DatabaseField(canBeNull = true)
     private int userId;
+	@DatabaseField(canBeNull = false, defaultValue = "0")
     private int authorId;
+	@DatabaseField(canBeNull = true)
     private int timesPerformed;
+	@DatabaseField(canBeNull = true)
     private int parentWorkout;
+	@DatabaseField(canBeNull = true)
     private String availability;
+	@DatabaseField(canBeNull = true)
     private String updated_at;
+	@DatabaseField(canBeNull = true)
     private String created_at;
+	@DatabaseField(canBeNull = true)
     private String deleted_at;
+	@DatabaseField(canBeNull = false, defaultValue = "0")
     private float timesPerWeek;
+	@DatabaseField(canBeNull = false, defaultValue = "0")
     private float averageCompleted;
+	@DatabaseField(canBeNull = false, defaultValue = "0")
     private int sale;
+	@DatabaseField(canBeNull = false, defaultValue = "0")
     private float price;
+	@DatabaseField(canBeNull = true)
     private String category;
+	@DatabaseField(canBeNull = true)
     private String lastRevized;
+	@DatabaseField(canBeNull = false, defaultValue = "0")
     private int timesPerformedRevized;
     
     
@@ -89,6 +111,11 @@ public class WorkoutModel {
 		this.lastRevized = lastRevized;
 		this.timesPerformedRevized = timesPerformedRevized;
 	}
+	
+	public WorkoutModel(){
+		// ORM Lite requires it
+	}
+	
 	/**
 	 * @return the id
 	 */

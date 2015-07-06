@@ -1,6 +1,7 @@
 
 package com.trainerworkout.trainee;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,22 +11,24 @@ import retrofit.RetrofitError;
 import retrofit.client.OkClient;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+import android.accounts.Account;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.j256.ormlite.android.AndroidConnectionSource;
+import com.j256.ormlite.dao.BaseDaoImpl;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
+import com.trainerworkout.trainee.database.DatabaseHelper;
 import com.trainerworkout.trainee.gson.DeserializeUser;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
 import com.trainerworkout.trainee.helper.LoggedUser;
@@ -62,7 +65,6 @@ public class LoginActivity extends Activity {
 		Button login_button = (Button)findViewById(R.id.button1);
 		login_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	startLogoFadeInOut();
             	            	
             	TextView email 	  = (TextView)findViewById(R.id.login_password);
             	TextView password = (TextView)findViewById(R.id.login_email);
@@ -82,12 +84,10 @@ public class LoginActivity extends Activity {
 	    					startMainActivity(response);
 	    				else
 	    					showLoginError();
-	    				stopLogoFadeInOut();
 	    				
 	    			}
 	    			@Override
 	    			public void failure(RetrofitError error) {
-	    				stopLogoFadeInOut();
 	    			}
 	    		});
             }
@@ -139,9 +139,15 @@ public class LoginActivity extends Activity {
 			.withNotification(ToastNotification.SUCCESS_LOGIN.concat(user.getFirstName()))
 			.show();
 		
+		UserModel DBUser = null;
+		try {
+			DBUser = createAndReturnUserIfNotExist(user);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		
 		Intent mainActivity = new Intent(this, MainActivity.class);
-		mainActivity.putExtra("user_firstName", user.getFirstName());
-		mainActivity.putExtra("user_profileImage", user.getImage());
+		mainActivity.putExtra("user_id", DBUser.getId());
 		startActivity(mainActivity);
 	}
 	
@@ -167,32 +173,16 @@ public class LoginActivity extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.hide();
 	}
-
-	private void startLogoFadeInOut(){
-		Animation fadeIn = new AlphaAnimation(0, 1);
-		fadeIn.setInterpolator(new DecelerateInterpolator());
-		fadeIn.setDuration(500);
-
-		Animation fadeOut = new AlphaAnimation(1, 0);
-		fadeOut.setInterpolator(new AccelerateInterpolator());
-		fadeOut.setStartOffset(500);
-		fadeOut.setDuration(500);
-
-		AnimationSet animation = new AnimationSet(false);
-		animation.addAnimation(fadeIn);
-		animation.addAnimation(fadeOut);
-		
-		ImageView logo = (ImageView)findViewById(R.id.first_drawer_image);
-		
-		logo.setAnimation(animation);
-	}
-	
-	private void stopLogoFadeInOut(){
-		ImageView logo = (ImageView)findViewById(R.id.first_drawer_image);
-		logo.setAnimation(null);
-	}
 	
 	private void createOkHttpClient(){
 		new HttpClientSingleton();
+	}
+	
+	private UserModel createAndReturnUserIfNotExist(UserModel user) throws Exception{
+		
+		DatabaseHelper helper = new DatabaseHelper(getApplicationContext());
+		UserModel DBUser = helper.getUserDao().createIfNotExists(user);
+		
+		return DBUser;
 	}
 }

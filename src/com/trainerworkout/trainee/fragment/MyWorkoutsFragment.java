@@ -1,6 +1,8 @@
 package com.trainerworkout.trainee.fragment;
 
 import java.lang.reflect.Type;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -23,8 +25,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.trainerworkout.trainee.R;
 import com.trainerworkout.trainee.adapter.WorkoutListAdapter;
+import com.trainerworkout.trainee.database.DatabaseHelper;
 import com.trainerworkout.trainee.gson.DeserializeWorkoutHolder;
 import com.trainerworkout.trainee.helper.Animations;
+import com.trainerworkout.trainee.helper.BackHandledFragment;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
 import com.trainerworkout.trainee.helper.LoggedUser;
 import com.trainerworkout.trainee.helper.SelectedWorkout;
@@ -35,7 +39,7 @@ import com.trainerworkout.trainee.notification.ToastNotification;
 import com.trainerworkout.trainee.resource.query.URLQueries;
 import com.trainerworkout.trainee.service.TWService;
  
-public class MyWorkoutsFragment extends Fragment {
+public class MyWorkoutsFragment extends BackHandledFragment {
      
 	private WorkoutListAdapter adapter;
 	private ListView workoutList;
@@ -63,11 +67,19 @@ public class MyWorkoutsFragment extends Fragment {
 			@Override
 			public void success(WorkoutsModel model, Response response) {
 				if(model.getStatus().equals("ok")){					
-					List<WorkoutHolderModel> workoutModels = deserializeWorkoutHolder(response);
+					List<WorkoutHolderModel> workoutModels 	= deserializeWorkoutHolder(response);
+					
+					List<WorkoutModel> workouts = new ArrayList<WorkoutModel>();
+					try {
+						workouts = createAndReturnWorkoutsIfNotExist(workoutModels);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					
 					workoutList = (ListView)getActivity().findViewById(R.id.workout_name_list);
 					
-					adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workoutModels);
+					adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workouts);
 					workoutList.setAdapter(adapter);
 					workoutList.setOnItemClickListener(new WorkoutClickListener(workoutModels));
 					
@@ -127,8 +139,39 @@ public class MyWorkoutsFragment extends Fragment {
 			
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, new WorkoutFragment()).commit();
+					.replace(R.id.frame_container, new WorkoutFragment()).addToBackStack("[BACK:MyWorkoutsFragment]").commit();
 		}
-    	
     }
+
+	@Override
+	public String getTagText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean onBackPressed() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+    
+    	
+	private List<WorkoutModel> createAndReturnWorkoutsIfNotExist(List<WorkoutHolderModel> workoutHolders) throws SQLException{
+		
+		DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
+		
+		for(WorkoutHolderModel holder: workoutHolders){
+			try {
+				helper.getWorkoutDao().createIfNotExists(holder.getWorkout());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
+		return helper.getWorkoutDao().queryForAll();
+	}
+
+	
+	
 }

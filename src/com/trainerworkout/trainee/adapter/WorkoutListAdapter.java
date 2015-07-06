@@ -22,14 +22,14 @@ import android.widget.TextView;
 public class WorkoutListAdapter extends BaseAdapter {
 
 	private Context context;
-    private List<WorkoutHolderModel> workoutItems;
+    private List<WorkoutModel> workoutItems;
 	
     /**
      * @param context
      * @param workoutItems
      */
 	public WorkoutListAdapter(Context context,
-			List<WorkoutHolderModel> workoutItems) {
+			List<WorkoutModel> workoutItems) {
 		super();
 		this.context = context;
 		this.workoutItems = workoutItems;
@@ -61,7 +61,7 @@ public class WorkoutListAdapter extends BaseAdapter {
           
         TextView txtTitle = (TextView) convertView.findViewById(R.id.workout_item_name);
         
-        txtTitle.setText(workoutItems.get(position).getWorkout().getName());
+        txtTitle.setText(workoutItems.get(position).getName());
 		
 		return convertView;
 	}

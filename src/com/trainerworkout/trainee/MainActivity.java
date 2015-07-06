@@ -1,5 +1,6 @@
 package com.trainerworkout.trainee;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import android.app.Fragment;
@@ -18,16 +19,21 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.trainerworkout.trainee.adapter.NavDrawerListAdapter;
+import com.trainerworkout.trainee.database.DatabaseHelper;
 import com.trainerworkout.trainee.fragment.ChatFragment;
 import com.trainerworkout.trainee.fragment.FeedbackFragment;
 import com.trainerworkout.trainee.fragment.MyWorkoutsFragment;
 import com.trainerworkout.trainee.fragment.ProfileFragment;
+import com.trainerworkout.trainee.helper.BackHandledFragment;
+import com.trainerworkout.trainee.helper.BackHandledFragment.BackHandlerInterface;
 import com.trainerworkout.trainee.model.drawer.NavDrawerFirstItem;
 import com.trainerworkout.trainee.model.drawer.NavDrawerItem;
 import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.notification.ToastNotification;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements BackHandlerInterface {
+	
+    private BackHandledFragment selectedFragment;
 
 	// Menu Variables
 	private DrawerLayout mDrawerLayout;
@@ -47,7 +53,7 @@ public class MainActivity extends FragmentActivity {
 	private static final String TAG = MainActivity.class.getSimpleName();
 	
 	// User information
-	String user_firstName, user_profileImage;
+	Integer user_id;
 
 	/**
 	 * Create the side menu and link fragments
@@ -60,8 +66,18 @@ public class MainActivity extends FragmentActivity {
 		// Fetch basic profile information
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {
-		    user_firstName 		= extras.getString("user_firstName");
-		    user_profileImage 	= extras.getString("user_profileImage");
+		    user_id = extras.getInt("user_id");
+		}
+		
+		UserModel user = null;
+		try {
+			user = new DatabaseHelper(getApplicationContext())
+										.getUserDao()
+										.queryForId(user_id);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
 		mTitle = mDrawerTitle = getTitle();
@@ -76,11 +92,10 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
 
-		
 		navDrawerItems = new ArrayList<Object>();
 
 		// First drawer 
-		navDrawerItems.add(new NavDrawerFirstItem(user_firstName,user_profileImage));
+		navDrawerItems.add(new NavDrawerFirstItem(user.getFirstName(),user.getImage()));
 		// Profile
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons
 				.getResourceId(0, -1)));
@@ -134,7 +149,7 @@ public class MainActivity extends FragmentActivity {
 			// on first time display view for first nav item
 			displayView(0);
 		}
-
+		
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 	}
 
@@ -267,6 +282,19 @@ public class MainActivity extends FragmentActivity {
 			// error in creating fragment
 			Log.e("MainActivity", "Error in creating fragment");
 		}
+	}
+
+	@Override
+    public void onBackPressed() {
+        if(selectedFragment == null || !selectedFragment.onBackPressed()) {
+            // Selected fragment did not consume the back press event.
+            super.onBackPressed();
+        }
+    }
+	
+	@Override
+	public void setSelectedFragment(BackHandledFragment backHandledFragment) {
+		this.selectedFragment = selectedFragment;
 	}
 
 }
