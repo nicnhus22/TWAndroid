@@ -15,6 +15,7 @@ import android.accounts.Account;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,8 +31,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.trainerworkout.trainee.database.DatabaseHelper;
 import com.trainerworkout.trainee.gson.DeserializeUser;
+import com.trainerworkout.trainee.helper.CurrentUser;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
-import com.trainerworkout.trainee.helper.LoggedUser;
 import com.trainerworkout.trainee.model.rest.LoginModel;
 import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.notification.ToastNotification;
@@ -84,10 +85,10 @@ public class LoginActivity extends Activity {
 	    					startMainActivity(response);
 	    				else
 	    					showLoginError();
-	    				
 	    			}
 	    			@Override
 	    			public void failure(RetrofitError error) {
+	    				startMainActivityOffLine();
 	    			}
 	    		});
             }
@@ -130,21 +131,30 @@ public class LoginActivity extends Activity {
 			    new GsonBuilder()
 			        .registerTypeAdapter(UserModel.class, new DeserializeUser())
 			        .create();
-		
 		String json = new String(((TypedByteArray) response.getBody()).getBytes());
 		UserModel user = gson.fromJson(json, UserModel.class);
-		LoggedUser.setUser(user);
 		
-		new ToastNotification.Builder(this.getApplicationContext())
-			.withNotification(ToastNotification.SUCCESS_LOGIN.concat(user.getFirstName()))
-			.show();
-		
+		// Create DB user
 		UserModel DBUser = null;
 		try {
 			DBUser = createAndReturnUserIfNotExist(user);
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+		
+		Intent mainActivity = new Intent(this, MainActivity.class);
+		mainActivity.putExtra("user_id", DBUser.getId());
+		startActivity(mainActivity);
+	}
+	
+	/**
+	 * Start Main Activity Off Line
+	 */
+	private void startMainActivityOffLine(){
+		// Get DB instance
+		DatabaseHelper helper = DatabaseHelper.getInstance(getApplicationContext());
+		
+		UserModel DBUser = CurrentUser.fetch(getApplicationContext());
 		
 		Intent mainActivity = new Intent(this, MainActivity.class);
 		mainActivity.putExtra("user_id", DBUser.getId());
@@ -180,7 +190,9 @@ public class LoginActivity extends Activity {
 	
 	private UserModel createAndReturnUserIfNotExist(UserModel user) throws Exception{
 		
-		DatabaseHelper helper = new DatabaseHelper(getApplicationContext());
+		// Get DB instance
+		DatabaseHelper helper = DatabaseHelper.getInstance(getApplicationContext());
+		// Insert and return user from DB
 		UserModel DBUser = helper.getUserDao().createIfNotExists(user);
 		
 		return DBUser;

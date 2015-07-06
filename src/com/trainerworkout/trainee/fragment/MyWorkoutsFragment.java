@@ -29,9 +29,10 @@ import com.trainerworkout.trainee.database.DatabaseHelper;
 import com.trainerworkout.trainee.gson.DeserializeWorkoutHolder;
 import com.trainerworkout.trainee.helper.Animations;
 import com.trainerworkout.trainee.helper.BackHandledFragment;
+import com.trainerworkout.trainee.helper.CurrentUser;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
-import com.trainerworkout.trainee.helper.LoggedUser;
 import com.trainerworkout.trainee.helper.SelectedWorkout;
+import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.model.rest.WorkoutHolderModel;
 import com.trainerworkout.trainee.model.rest.WorkoutModel;
 import com.trainerworkout.trainee.model.rest.WorkoutsModel;
@@ -53,6 +54,9 @@ public class MyWorkoutsFragment extends BackHandledFragment {
   
         View rootView = inflater.inflate(R.layout.fragment_my_workouts, container, false);
         
+        // Get logged user
+        UserModel DBUser = CurrentUser.fetch(getActivity());
+        
         final ImageView loader_logo = (ImageView)rootView.findViewById(R.id.workout_list_loader);
         Animations.startLogoFadeInOut(loader_logo);
         
@@ -63,7 +67,7 @@ public class MyWorkoutsFragment extends BackHandledFragment {
 			.build(); 
 
         TWService service = restAdapter.create(TWService.class);
-		service.fetchWorkouts(LoggedUser.getUser().getId(), new Callback<WorkoutsModel>() {
+		service.fetchWorkouts(DBUser.getId(), new Callback<WorkoutsModel>() {
 			@Override
 			public void success(WorkoutsModel model, Response response) {
 				if(model.getStatus().equals("ok")){					
@@ -81,7 +85,7 @@ public class MyWorkoutsFragment extends BackHandledFragment {
 					
 					adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workouts);
 					workoutList.setAdapter(adapter);
-					workoutList.setOnItemClickListener(new WorkoutClickListener(workoutModels));
+					workoutList.setOnItemClickListener(new WorkoutClickListener(workouts));
 					
 					Animations.stopLogoFadeInOut(loader_logo);
 					Animations.hideView(loader_logo);
@@ -90,7 +94,17 @@ public class MyWorkoutsFragment extends BackHandledFragment {
 			}
 			@Override
 			public void failure(RetrofitError error) {
-				System.out.println(error);
+				List<WorkoutModel> workouts = fetchOffLineWorkouts();
+				
+				workoutList = (ListView)getActivity().findViewById(R.id.workout_name_list);
+				
+				adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workouts);
+				workoutList.setAdapter(adapter);
+				workoutList.setOnItemClickListener(new WorkoutClickListener(workouts));
+				
+				Animations.stopLogoFadeInOut(loader_logo);
+				Animations.hideView(loader_logo);
+				Animations.fadeView(workoutList);
 			}
 		});
 
@@ -125,17 +139,17 @@ public class MyWorkoutsFragment extends BackHandledFragment {
      */
     private class WorkoutClickListener implements ListView.OnItemClickListener {
     	
-    	private List<WorkoutHolderModel> workoutModels;
+    	private List<WorkoutModel> workouts;
     	
-    	public WorkoutClickListener(List<WorkoutHolderModel> workoutModels){
-    		this.workoutModels = workoutModels;
+    	public WorkoutClickListener(List<WorkoutModel> workouts){
+    		this.workouts = workouts;
     	}
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			
-			SelectedWorkout.setSelectedWorkout(workoutModels.get(position).getWorkout());
+			SelectedWorkout.setSelectedWorkout(workouts.get(position));
 			
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction()
@@ -172,6 +186,17 @@ public class MyWorkoutsFragment extends BackHandledFragment {
 		return helper.getWorkoutDao().queryForAll();
 	}
 
-	
+	private List<WorkoutModel> fetchOffLineWorkouts(){
+		DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
+		
+		List<WorkoutModel> workouts = null;
+		try {
+			workouts = helper.getWorkoutDao().queryForAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return workouts;
+	}
 	
 }

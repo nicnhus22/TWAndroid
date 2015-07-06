@@ -3,8 +3,11 @@ package com.trainerworkout.trainee;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ import com.trainerworkout.trainee.fragment.FeedbackFragment;
 import com.trainerworkout.trainee.fragment.MyWorkoutsFragment;
 import com.trainerworkout.trainee.fragment.ProfileFragment;
 import com.trainerworkout.trainee.helper.BackHandledFragment;
+import com.trainerworkout.trainee.helper.CurrentUser;
 import com.trainerworkout.trainee.helper.BackHandledFragment.BackHandlerInterface;
 import com.trainerworkout.trainee.model.drawer.NavDrawerFirstItem;
 import com.trainerworkout.trainee.model.drawer.NavDrawerItem;
@@ -67,18 +71,10 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {
 		    user_id = extras.getInt("user_id");
+		    saveCurrentUserID(user_id);
 		}
 		
-		UserModel user = null;
-		try {
-			user = new DatabaseHelper(getApplicationContext())
-										.getUserDao()
-										.queryForId(user_id);
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		UserModel user = CurrentUser.fetch(getApplicationContext());
 		
 		mTitle = mDrawerTitle = getTitle();
 
@@ -295,6 +291,17 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 	@Override
 	public void setSelectedFragment(BackHandledFragment backHandledFragment) {
 		this.selectedFragment = selectedFragment;
+	}
+	
+	/**
+	 * Save the current user ID to retrieve his info
+	 * @param userID
+	 */
+	private void saveCurrentUserID(int userID){
+		SharedPreferences sp = getSharedPreferences("USER_PREFERENCES", Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sp.edit();
+		editor.putInt("CURRENT_USER_ID", userID);
+		editor.commit();
 	}
 
 }

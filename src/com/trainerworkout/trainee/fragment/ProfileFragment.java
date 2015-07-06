@@ -3,6 +3,7 @@ package com.trainerworkout.trainee.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,9 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.trainerworkout.trainee.R;
+import com.trainerworkout.trainee.database.DatabaseHelper;
+import com.trainerworkout.trainee.helper.CurrentUser;
 import com.trainerworkout.trainee.helper.DownloadSetImageTask;
 import com.trainerworkout.trainee.helper.DownloadSetImageTask.ImageType;
-import com.trainerworkout.trainee.helper.LoggedUser;
+import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.notification.ToastNotification;
 import com.trainerworkout.trainee.view.RoundedImage;
  
@@ -43,26 +46,27 @@ public class ProfileFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 
-	
-	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
   
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         
+        // Fetch logged user
+        UserModel DBUser = CurrentUser.fetch(getActivity());
+        
         profile_edit_image 		= (ImageView)rootView.findViewById(R.id.profile_edit_image);
-        profile_edit_first_name 	= (EditText)rootView.findViewById(R.id.profile_edit_first_name);
+        profile_edit_first_name = (EditText)rootView.findViewById(R.id.profile_edit_first_name);
         profile_edit_last_name 	= (EditText)rootView.findViewById(R.id.profile_edit_last_name);
         profile_edit_email 		= (EditText)rootView.findViewById(R.id.profile_edit_email);
         profile_edit_password 	= (EditText)rootView.findViewById(R.id.profile_edit_password);
         
         // Set user fields
         new DownloadSetImageTask(profile_edit_image, getActivity(), true, ImageType.MISSING_GENERAL)
-        	.execute(LoggedUser.getUser().getImage());
-        profile_edit_first_name.setText(LoggedUser.getUser().getFirstName());
-        profile_edit_last_name.setText(LoggedUser.getUser().getLastName());
-        profile_edit_email.setText(LoggedUser.getUser().getEmail());
+        	.execute(DBUser.getImage());
+        profile_edit_first_name.setText(DBUser.getFirstName());
+        profile_edit_last_name.setText(DBUser.getLastName());
+        profile_edit_email.setText(DBUser.getEmail());
         
         profile_edit_image.setOnClickListener(new OnClickListener(){
 			@Override
