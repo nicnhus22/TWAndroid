@@ -74,7 +74,6 @@ public class ProfileFragment extends Fragment {
 				new ToastNotification.Builder(getActivity())
 					.withNotification("Will change image")
 					.show();
-				
 				Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 				photoPickerIntent.setType("image/*");
 				startActivityForResult(photoPickerIntent, REQ_CODE_PICK_IMAGE);    
@@ -89,6 +88,10 @@ public class ProfileFragment extends Fragment {
 		super.onResume();
 	}
 
+	/**
+	 * On result, transform the selected image into a Bitmap
+	 * and set the image in the view
+	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, 
 		       Intent imageReturnedIntent) {

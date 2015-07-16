@@ -27,14 +27,19 @@ import com.j256.ormlite.android.AndroidConnectionSource;
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.trainerworkout.trainee.database.DatabaseHelper;
 import com.trainerworkout.trainee.gson.DeserializeUser;
 import com.trainerworkout.trainee.helper.CurrentUser;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
+import com.trainerworkout.trainee.helper.Security;
 import com.trainerworkout.trainee.model.rest.LoginModel;
 import com.trainerworkout.trainee.model.rest.UserModel;
+import com.trainerworkout.trainee.model.rest.WorkoutModel;
 import com.trainerworkout.trainee.notification.ToastNotification;
 import com.trainerworkout.trainee.resource.query.URLQueries;
 import com.trainerworkout.trainee.service.TWService;
@@ -60,15 +65,14 @@ public class LoginActivity extends Activity {
 		// Set view
 		setContentView(R.layout.activity_login);
 		// Create Http Client singleton
-		createOkHttpClient();
-		final OkClient client = HttpClientSingleton.getInstance();
+		final OkClient client = createOkHttpClient();
 				
 		Button login_button = (Button)findViewById(R.id.button1);
 		login_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	            	
-            	TextView email 	  = (TextView)findViewById(R.id.login_password);
-            	TextView password = (TextView)findViewById(R.id.login_email);
+            	final TextView email 	  	= (TextView)findViewById(R.id.login_email);
+            	final TextView password 	= (TextView)findViewById(R.id.login_password);
             	
             	RestAdapter restAdapter = new RestAdapter.Builder()
 	    			.setLogLevel(RestAdapter.LogLevel.FULL)
@@ -77,25 +81,23 @@ public class LoginActivity extends Activity {
 	    			.build(); 
 
 	    		TWService service = restAdapter.create(TWService.class);
-	    		service.performLogin(password.getText().toString(),email.getText().toString(), new Callback<LoginModel>() {
+	    		service.performLogin(email.getText().toString(), password.getText().toString(), new Callback<LoginModel>() {
 	    			@Override
 	    			public void success(LoginModel model, Response response) {
 	    				final boolean success = (model.getStatus().equals(LOGIN_SUCCESS) ? true : false);
 	    				if(success)
-	    					startMainActivity(response);
+	    					startMainActivity(response, password.getText().toString());
 	    				else
 	    					showLoginError();
 	    			}
 	    			@Override
 	    			public void failure(RetrofitError error) {
-	    				startMainActivityOffLine();
+	    				startMainActivityOffLine(email.getText().toString(), password.getText().toString());
 	    			}
 	    		});
             }
         });
 	}
-
-
 
 	@Override
 	public void onResume() {
@@ -125,18 +127,18 @@ public class LoginActivity extends Activity {
 	/**
 	 * Start MainActivity on login successful
 	 */
-	private void startMainActivity(Response response){
+	private void startMainActivity(Response response, String password){
 		// Build user model
-		Gson gson = 
-			    new GsonBuilder()
-			        .registerTypeAdapter(UserModel.class, new DeserializeUser())
-			        .create();
+		Gson gson = new GsonBuilder()
+					        .registerTypeAdapter(UserModel.class, new DeserializeUser())
+					        .create();
 		String json = new String(((TypedByteArray) response.getBody()).getBytes());
 		UserModel user = gson.fromJson(json, UserModel.class);
 		
 		// Create DB user
 		UserModel DBUser = null;
 		try {
+			user.setPassword(password);
 			DBUser = createAndReturnUserIfNotExist(user);
 		} catch (Exception e){
 			e.printStackTrace();
@@ -150,15 +152,32 @@ public class LoginActivity extends Activity {
 	/**
 	 * Start Main Activity Off Line
 	 */
-	private void startMainActivityOffLine(){
-		// Get DB instance
+	private void startMainActivityOffLine(String email, String password){
 		DatabaseHelper helper = DatabaseHelper.getInstance(getApplicationContext());
 		
-		UserModel DBUser = CurrentUser.fetch(getApplicationContext());
-		
-		Intent mainActivity = new Intent(this, MainActivity.class);
-		mainActivity.putExtra("user_id", DBUser.getId());
-		startActivity(mainActivity);
+		PreparedQuery<UserModel> preparedQuery = null;
+		UserModel DBUser = null;
+		try {
+			QueryBuilder<UserModel, Integer> qb = helper.getUserDao().queryBuilder();
+			Where where = qb.where();
+			where.eq("email", email);
+			where.and();
+			where.eq("password", password);
+			preparedQuery = qb.prepare();
+			DBUser = helper.getUserDao().queryForFirst(preparedQuery);
+			
+			if(null != DBUser){
+				Intent mainActivity = new Intent(this, MainActivity.class);
+				mainActivity.putExtra("user_id", DBUser.getId());
+				startActivity(mainActivity);
+			} else {
+				new ToastNotification.Builder(this.getApplicationContext())
+					.withNotification("Please check your internet connection.")
+					.show();
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}		
 	}
 	
 	/**
@@ -184,12 +203,21 @@ public class LoginActivity extends Activity {
 		actionBar.hide();
 	}
 	
-	private void createOkHttpClient(){
+	/**
+	 * @return OkClient object to perform Rest calls
+	 */
+	private OkClient createOkHttpClient(){
 		new HttpClientSingleton();
+		return HttpClientSingleton.getInstance();
 	}
 	
+	/**
+	 * 
+	 * @param user
+	 * @return UserModel object: last logged user
+	 * @throws Exception
+	 */
 	private UserModel createAndReturnUserIfNotExist(UserModel user) throws Exception{
-		
 		// Get DB instance
 		DatabaseHelper helper = DatabaseHelper.getInstance(getApplicationContext());
 		// Insert and return user from DB

@@ -17,7 +17,6 @@ public class WorkoutFragment extends Fragment {
      
 	private WorkoutListAdapter adapter;
 	private ListView workoutList;
-	private WorkoutModel selectedWorkout;
 	
     public WorkoutFragment(){}
     
@@ -26,11 +25,11 @@ public class WorkoutFragment extends Fragment {
             Bundle savedInstanceState) {
   
         View rootView = inflater.inflate(R.layout.fragment_workout, container, false);
-        
-        selectedWorkout = SelectedWorkout.getSelectedWorkout();
+                
+        Integer SELECTED_WORKOUT_ID = getArguments().getInt("SELECTED_WORKOUT_ID");
         
         TextView label = (TextView)rootView.findViewById(R.id.workout_name);
-        label.setText(selectedWorkout.getName());
+        label.setText(SELECTED_WORKOUT_ID.toString());
 
 		return rootView;
     }

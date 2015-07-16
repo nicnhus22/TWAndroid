@@ -12,6 +12,8 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,10 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+import com.trainerworkout.trainee.MainActivity;
 import com.trainerworkout.trainee.R;
 import com.trainerworkout.trainee.adapter.WorkoutListAdapter;
 import com.trainerworkout.trainee.database.DatabaseHelper;
@@ -40,11 +46,16 @@ import com.trainerworkout.trainee.notification.ToastNotification;
 import com.trainerworkout.trainee.resource.query.URLQueries;
 import com.trainerworkout.trainee.service.TWService;
  
-public class MyWorkoutsFragment extends BackHandledFragment {
+public class MyWorkoutsFragment extends Fragment {
      
 	private WorkoutListAdapter adapter;
 	private ListView workoutList;
 	private WorkoutModel workoutModel;
+	
+	// Loader logo
+	ImageView loader_logo = null;
+	// Logged user
+	UserModel DBUser = null;
 	
     public MyWorkoutsFragment(){}
      
@@ -55,9 +66,9 @@ public class MyWorkoutsFragment extends BackHandledFragment {
         View rootView = inflater.inflate(R.layout.fragment_my_workouts, container, false);
         
         // Get logged user
-        UserModel DBUser = CurrentUser.fetch(getActivity());
+        DBUser = CurrentUser.fetch(getActivity());
         
-        final ImageView loader_logo = (ImageView)rootView.findViewById(R.id.workout_list_loader);
+        loader_logo = (ImageView)rootView.findViewById(R.id.workout_list_loader);
         Animations.startLogoFadeInOut(loader_logo);
         
         RestAdapter restAdapter = new RestAdapter.Builder()
@@ -75,40 +86,35 @@ public class MyWorkoutsFragment extends BackHandledFragment {
 					
 					List<WorkoutModel> workouts = new ArrayList<WorkoutModel>();
 					try {
-						workouts = createAndReturnWorkoutsIfNotExist(workoutModels);
+						workouts = createAndReturnWorkoutsIfNotExist(workoutModels, DBUser.getId());
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
-					workoutList = (ListView)getActivity().findViewById(R.id.workout_name_list);
-					
-					adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workouts);
-					workoutList.setAdapter(adapter);
-					workoutList.setOnItemClickListener(new WorkoutClickListener(workouts));
-					
-					Animations.stopLogoFadeInOut(loader_logo);
-					Animations.hideView(loader_logo);
-					Animations.fadeView(workoutList);
+					addWorkoutListToView(workouts);
 				}
 			}
 			@Override
 			public void failure(RetrofitError error) {
 				List<WorkoutModel> workouts = fetchOffLineWorkouts();
-				
-				workoutList = (ListView)getActivity().findViewById(R.id.workout_name_list);
-				
-				adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workouts);
-				workoutList.setAdapter(adapter);
-				workoutList.setOnItemClickListener(new WorkoutClickListener(workouts));
-				
-				Animations.stopLogoFadeInOut(loader_logo);
-				Animations.hideView(loader_logo);
-				Animations.fadeView(workoutList);
+				addWorkoutListToView(workouts);
 			}
 		});
 
 		return rootView;
+    }
+    
+    private void addWorkoutListToView(List<WorkoutModel> workouts){
+    	workoutList = (ListView)getActivity().findViewById(R.id.workout_name_list);
+		
+		adapter = new WorkoutListAdapter(getActivity().getApplicationContext(), workouts);
+		workoutList.setAdapter(adapter);
+		workoutList.setOnItemClickListener(new WorkoutClickListener(workouts));
+		
+		Animations.stopLogoFadeInOut(loader_logo);
+		Animations.hideView(loader_logo);
+		Animations.fadeView(workoutList);
     }
     
     /**
@@ -151,26 +157,27 @@ public class MyWorkoutsFragment extends BackHandledFragment {
 			
 			SelectedWorkout.setSelectedWorkout(workouts.get(position));
 			
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, new WorkoutFragment()).addToBackStack("[BACK:MyWorkoutsFragment]").commit();
+			Bundle bundle=new Bundle();
+			bundle.putInt("SELECTED_WORKOUT_ID", workouts.get(position).getId());
+			WorkoutFragment fragment = new WorkoutFragment();
+			fragment.setArguments(bundle);
+			
+			FragmentTransaction mFragmentTransaction = getFragmentManager()
+	                .beginTransaction();
+			mFragmentTransaction.addToBackStack(null)
+				.replace(R.id.frame_container, fragment).commit();
 		}
     }
-
-	@Override
-	public String getTagText() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean onBackPressed() {
-		// TODO Auto-generated method stub
-		return true;
-	}
     
-    	
-	private List<WorkoutModel> createAndReturnWorkoutsIfNotExist(List<WorkoutHolderModel> workoutHolders) throws SQLException{
+    /**
+     * This takes a list of WorkoutHolderModels and create a tuple for each
+     * workout in the Workout table.
+     * 
+     * @param workoutHolders
+     * @return List<WorkoutModel> list of workouts
+     * @throws SQLException
+     */
+	private List<WorkoutModel> createAndReturnWorkoutsIfNotExist(List<WorkoutHolderModel> workoutHolders, int userID) throws SQLException{
 		
 		DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
 		
@@ -183,15 +190,41 @@ public class MyWorkoutsFragment extends BackHandledFragment {
 			}
 		}
 	
-		return helper.getWorkoutDao().queryForAll();
+		PreparedQuery<WorkoutModel> preparedQuery = null;
+		try {
+			QueryBuilder<WorkoutModel, Integer> qb = helper.getWorkoutDao().queryBuilder();
+			Where where = qb.where();
+			where.eq("userId", userID);
+			preparedQuery = qb.prepare();
+		}catch (Exception e){
+			e.printStackTrace();
+		}		
+		
+		return helper.getWorkoutDao().query(preparedQuery);
 	}
 
+	/**
+	 * The list will be the last list fetched when Internet worked.
+	 * 
+	 * @return List<WorkoutModel> list of WorkoutModels for the off line mode.
+	 */
 	private List<WorkoutModel> fetchOffLineWorkouts(){
+		
 		DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
+		
+		PreparedQuery<WorkoutModel> preparedQuery = null;
+		try {
+			QueryBuilder<WorkoutModel, Integer> qb = helper.getWorkoutDao().queryBuilder();
+			Where where = qb.where();
+			where.eq("userId", DBUser.getId());
+			preparedQuery = qb.prepare();
+		}catch (Exception e){
+			e.printStackTrace();
+		}		
 		
 		List<WorkoutModel> workouts = null;
 		try {
-			workouts = helper.getWorkoutDao().queryForAll();
+			workouts = helper.getWorkoutDao().query(preparedQuery);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:background="@color/light_green"
         android:divider="#FFF"
-        android:dividerHeight="1dp"
+        android:dividerHeight="1px"
         android:textAlignment="center"
         android:visibility="gone" >
     </ListView>

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -35,9 +36,9 @@ import com.trainerworkout.trainee.model.drawer.NavDrawerItem;
 import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.notification.ToastNotification;
 
-public class MainActivity extends FragmentActivity implements BackHandlerInterface {
-	
-    private BackHandledFragment selectedFragment;
+public class MainActivity extends FragmentActivity {
+
+	private BackHandledFragment selectedFragment;
 
 	// Menu Variables
 	private DrawerLayout mDrawerLayout;
@@ -55,7 +56,7 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 
 	// Class Variables
 	private static final String TAG = MainActivity.class.getSimpleName();
-	
+
 	// User information
 	Integer user_id;
 
@@ -66,16 +67,16 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		// Fetch basic profile information
+
+		// Retrieve user ID
 		Bundle extras = getIntent().getExtras();
 		if(extras != null) {
-		    user_id = extras.getInt("user_id");
-		    saveCurrentUserID(user_id);
+			user_id = extras.getInt("user_id");
+			saveCurrentUserID(user_id);
 		}
-		
+		// Fetch current user
 		UserModel user = CurrentUser.fetch(getApplicationContext());
-		
+
 		mTitle = mDrawerTitle = getTitle();
 
 		// load slide menu items
@@ -123,10 +124,10 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, // nav menu toggle icon
 				R.string.app_name, // nav drawer open - description for
-									// accessibility
+				// accessibility
 				R.string.app_name // nav drawer close - description for
-									// accessibility
-		) {
+				// accessibility
+				) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
 				// calling onPrepareOptionsMenu() to show action bar icons
@@ -145,7 +146,7 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 			// on first time display view for first nav item
 			displayView(0);
 		}
-		
+
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 	}
 
@@ -222,7 +223,7 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 	 * Slide menu item click listener
 	 * */
 	private class SlideMenuClickListener implements
-			ListView.OnItemClickListener {
+	ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
@@ -255,17 +256,20 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 			break;
 		case 5:
 			new ToastNotification.Builder(this.getApplicationContext())
-				.withNotification("Will Logout")
-				.show();
+			.withNotification("Will Logout")
+			.show();
 			break;
 		default:
 			break;
 		}
 
+		
+		
 		if (fragment != null) {
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).commit();
+			FragmentTransaction mFragmentTransaction = getFragmentManager()
+	                .beginTransaction();
+			mFragmentTransaction.addToBackStack(null)
+			.replace(R.id.frame_container, fragment).commit();
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
 			mDrawerList.setSelection(position);
@@ -281,18 +285,14 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 	}
 
 	@Override
-    public void onBackPressed() {
-        if(selectedFragment == null || !selectedFragment.onBackPressed()) {
-            // Selected fragment did not consume the back press event.
-            super.onBackPressed();
-        }
-    }
-	
-	@Override
-	public void setSelectedFragment(BackHandledFragment backHandledFragment) {
-		this.selectedFragment = selectedFragment;
+	public void onBackPressed() {
+		if (getFragmentManager().getBackStackEntryCount() == 0) {
+			this.finish();
+		} else {
+			getFragmentManager().popBackStack();
+		}
 	}
-	
+
 	/**
 	 * Save the current user ID to retrieve his info
 	 * @param userID
@@ -303,5 +303,5 @@ public class MainActivity extends FragmentActivity implements BackHandlerInterfa
 		editor.putInt("CURRENT_USER_ID", userID);
 		editor.commit();
 	}
-
+	
 }

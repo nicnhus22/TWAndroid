@@ -21,6 +21,8 @@ public class UserModel {
 	@DatabaseField(canBeNull = true)
     String email;
 	@DatabaseField(canBeNull = true)
+    String password;
+	@DatabaseField(canBeNull = true)
     String phone;
 	@DatabaseField(canBeNull = true)
     String address;
@@ -124,7 +126,7 @@ public class UserModel {
      * @param objectives
      */
 	public UserModel(int id, int admin, int appInstalled, int demoApp,
-			String firstName, String lastName, String email, String phone,
+			String firstName, String lastName, String email, String password, String phone,
 			String address, String street, String suite, String city,
 			String province, String country, String userType,
 			String fbUsername, String created_at, String deleted_at,
@@ -143,6 +145,7 @@ public class UserModel {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.password = password;
 		this.phone = phone;
 		this.address = address;
 		this.street = street;
@@ -275,6 +278,20 @@ public class UserModel {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	/**
@@ -696,5 +713,6 @@ public class UserModel {
 	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
 	}    
-    
+ 
+	
 }
