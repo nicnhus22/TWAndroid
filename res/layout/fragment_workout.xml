@@ -15,19 +15,12 @@
         android:layout_centerHorizontal="true"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/workout_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="10dp"
-            android:text="Chat View"
-            android:textSize="20dp" />
-
         <ListView
             android:id="@+id/workout_exercise_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:divider="#FFF"
+        	android:dividerHeight="1px" >
         </ListView>
 
     </LinearLayout>

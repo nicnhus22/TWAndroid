@@ -41,6 +41,7 @@ import com.trainerworkout.trainee.helper.SelectedWorkout;
 import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.model.rest.WorkoutHolderModel;
 import com.trainerworkout.trainee.model.rest.WorkoutModel;
+import com.trainerworkout.trainee.model.rest.WorkoutsExercisesModel;
 import com.trainerworkout.trainee.model.rest.WorkoutsModel;
 import com.trainerworkout.trainee.notification.ToastNotification;
 import com.trainerworkout.trainee.resource.query.URLQueries;
@@ -182,6 +183,11 @@ public class MyWorkoutsFragment extends Fragment {
 		for(WorkoutHolderModel holder: workoutHolders){
 			try {
 				helper.getWorkoutDao().createIfNotExists(holder.getWorkout());
+				
+				for(WorkoutsExercisesModel exercise: holder.getExercises()){
+					helper.getWorkoutsExercisesDao().createIfNotExists(exercise);
+					helper.getExercisesDao().createIfNotExists(exercise.getExercise());
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

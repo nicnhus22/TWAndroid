@@ -2,14 +2,17 @@ package com.trainerworkout.trainee.model.rest;
 
 import java.util.List;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class WorkoutHolderModel {
 
 	private WorkoutModel workout;
 	private List<String> images;
-	private List<Object> exercises;
+	private transient  List<WorkoutsExercisesModel> exercises;
 	
 	public WorkoutHolderModel(WorkoutModel workout, List<String> images,
-			List<Object> exercises) {
+			List<WorkoutsExercisesModel> exercises) {
 		super();
 		this.workout = workout;
 		this.images = images;
@@ -53,7 +56,7 @@ public class WorkoutHolderModel {
 	/**
 	 * @return the exercises
 	 */
-	public List<Object> getExercises() {
+	public List<WorkoutsExercisesModel> getExercises() {
 		return exercises;
 	}
 
@@ -62,7 +65,7 @@ public class WorkoutHolderModel {
 	/**
 	 * @param exercises the exercises to set
 	 */
-	public void setExercises(List<Object> exercises) {
+	public void setExercises(List<WorkoutsExercisesModel> exercises) {
 		this.exercises = exercises;
 	}
 

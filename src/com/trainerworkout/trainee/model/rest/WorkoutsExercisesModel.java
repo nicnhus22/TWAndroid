@@ -1,11 +1,15 @@
 package com.trainerworkout.trainee.model.rest;
 
+import com.google.gson.annotations.Expose;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "WorkoutsExercisesModel")
 public class WorkoutsExercisesModel {
 
+	@Expose
+	private ExercisesModel exercises;
+	
 	@DatabaseField(canBeNull = false, id = true)
 	int id;
 	@DatabaseField(canBeNull = true)
@@ -209,5 +213,20 @@ public class WorkoutsExercisesModel {
 	public void setMetric(String metric) {
 		this.metric = metric;
 	}
+
+	/**
+	 * @return the exercise
+	 */
+	public ExercisesModel getExercise() {
+		return exercises;
+	}
+
+	/**
+	 * @param exercise the exercise to set
+	 */
+	public void setExercise(ExercisesModel exercise) {
+		this.exercises = exercise;
+	}
+	
 	
 }

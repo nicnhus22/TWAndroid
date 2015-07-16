@@ -12,8 +12,10 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.trainerworkout.trainee.R;
+import com.trainerworkout.trainee.model.rest.ExercisesModel;
 import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.model.rest.WorkoutModel;
+import com.trainerworkout.trainee.model.rest.WorkoutsExercisesModel;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -30,10 +32,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	// Tables
 	private Dao<WorkoutModel, Integer> 	workoutDao  = null;
 	private Dao<UserModel, Integer> 	userDao 	= null;
+	private Dao<WorkoutsExercisesModel, Integer> workoutsExercisesDao 	= null;
+	private Dao<ExercisesModel, Integer> exercisesDao = null;
 	
 	// Exceptions
-	private RuntimeExceptionDao<WorkoutModel, Integer> 	workoutRuntimeDao 	= null;
-	private RuntimeExceptionDao<UserModel, Integer> 	userRuntimeDao 		= null;
+	private RuntimeExceptionDao<WorkoutModel, Integer> 	 workoutRuntimeDao 	= null;
+	private RuntimeExceptionDao<UserModel, Integer> 	 userRuntimeDao 		= null;
+	private RuntimeExceptionDao<WorkoutsExercisesModel, Integer> workoutsExercisesRuntimeDao = null;
+	private RuntimeExceptionDao<ExercisesModel, Integer> exercisesRuntimeDao = null; 
 
 
 	public DatabaseHelper(Context context) {
@@ -98,6 +104,25 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		}
 		return workoutDao;
 	}
+	
+	/**
+	 * Get WorkoutsExercises instance
+	 * @return
+	 * @throws SQLException
+	 */
+	public Dao<WorkoutsExercisesModel, Integer> getWorkoutsExercisesDao() throws SQLException {
+		if (workoutsExercisesDao == null) {
+			workoutsExercisesDao = getDao(WorkoutsExercisesModel.class);
+		}
+		return workoutsExercisesDao;
+	}
+	
+	public Dao<ExercisesModel, Integer> getExercisesDao() throws SQLException {
+		if (exercisesDao == null) {
+			exercisesDao = getDao(ExercisesModel.class);
+		}
+		return exercisesDao;
+	}
 
 	@Override
 	public void onCreate(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource) {
@@ -105,7 +130,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			Log.i(DatabaseHelper.class.getName(), "onCreate");
 			TableUtils.createTable(connectionSource, UserModel.class);
 			TableUtils.createTable(connectionSource, WorkoutModel.class);
-
+			TableUtils.createTable(connectionSource, WorkoutsExercisesModel.class);
+			TableUtils.createTable(connectionSource, ExercisesModel.class);
 		} catch (SQLException e) {
 			Log.e(LOG_NAME, "Could not create new tables", e);
 		}
@@ -118,6 +144,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			Log.i(DatabaseHelper.class.getName(), "onUpgrade");
 			TableUtils.dropTable(connectionSource, UserModel.class, true);
 			TableUtils.dropTable(connectionSource, WorkoutModel.class, true);
+			TableUtils.dropTable(connectionSource, WorkoutsExercisesModel.class, true);
+			TableUtils.dropTable(connectionSource, ExercisesModel.class, true);
 			onCreate(sqLiteDatabase, connectionSource);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -128,8 +156,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void close() {
 		super.close();
-		userRuntimeDao 		= null;
-		workoutRuntimeDao 	= null;
+		userRuntimeDao 		 = null;
+		workoutRuntimeDao 	 = null;
+		workoutsExercisesRuntimeDao = null;
+		exercisesRuntimeDao  = null;
 	}
 
 }

@@ -7,9 +7,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class WorkoutsModel {
 
-	@SerializedName("data")
-	@Expose
-	private List<WorkoutModel> workouts;
 	@SerializedName("status")
 	@Expose
 	private String status;
@@ -27,24 +24,8 @@ public class WorkoutsModel {
 	public WorkoutsModel(List<WorkoutModel> workouts, String status,
 			String total) {
 		super();
-		this.workouts = workouts;
 		this.status = status;
 		this.total = total;
-	}
-
-
-	/**
-	 * @return the workouts
-	 */
-	public List<WorkoutModel> getWorkouts() {
-		return workouts;
-	}
-
-	/**
-	 * @param workouts the workouts to set
-	 */
-	public void setWorkouts(List<WorkoutModel> workouts) {
-		this.workouts = workouts;
 	}
 
 	/**
