@@ -27,7 +27,7 @@
 	        android:src="@drawable/tw" />
 	
 	    <TextView
-	        android:id="@+id/textView1"
+	        android:id="@+id/workout_exercise_name"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@+id/profile_edit_image"
@@ -43,7 +43,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
 	        android:layout_alignParentRight="true"
-	        android:layout_below="@+id/textView1"
+	        android:layout_below="@+id/workout_exercise_name"
 	        android:layout_marginLeft="15dp"
 	        android:layout_marginRight="15dp"
 	        android:layout_marginTop="15dp"

@@ -1388,6 +1388,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int LinearLayout1=0x7f070047;
+        public static final int RelativeLayout1=0x7f07006c;
         public static final int action_bar=0x7f070027;
         public static final int action_bar_activity_content=0x7f070020;
         public static final int action_bar_container=0x7f070026;
@@ -1399,7 +1400,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f070021;
         public static final int action_menu_presenter=0x7f070022;
         public static final int action_mode_close_button=0x7f07002f;
-        public static final int action_settings=0x7f070079;
+        public static final int action_settings=0x7f07007d;
         public static final int activity_chooser_view_content=0x7f070030;
         public static final int always=0x7f070016;
         public static final int beginning=0x7f07001c;
@@ -1467,17 +1468,17 @@ containing a value of this type.
         public static final int none=0x7f07001b;
         public static final int normal=0x7f070001;
         public static final int picker_subtitle=0x7f070060;
-        public static final int profile_edit_email=0x7f070075;
-        public static final int profile_edit_first_name=0x7f070073;
-        public static final int profile_edit_image=0x7f070071;
-        public static final int profile_edit_last_name=0x7f070074;
-        public static final int profile_edit_password=0x7f070076;
-        public static final int profile_edit_save=0x7f070077;
+        public static final int profile_edit_email=0x7f070078;
+        public static final int profile_edit_first_name=0x7f070076;
+        public static final int profile_edit_image=0x7f070075;
+        public static final int profile_edit_last_name=0x7f070077;
+        public static final int profile_edit_password=0x7f070079;
+        public static final int profile_edit_save=0x7f07007a;
         public static final int progress_circular=0x7f070023;
         public static final int progress_horizontal=0x7f070024;
         public static final int radio=0x7f07003a;
         public static final int right=0x7f07000b;
-        public static final int scrollView1=0x7f070070;
+        public static final int scrollView1=0x7f070074;
         public static final int search_badge=0x7f07003d;
         public static final int search_bar=0x7f07003c;
         public static final int search_button=0x7f07003e;
@@ -1497,18 +1498,21 @@ containing a value of this type.
         public static final int standard=0x7f070003;
         public static final int submit_area=0x7f070044;
         public static final int tabMode=0x7f07000d;
-        public static final int textView1=0x7f070072;
         public static final int title=0x7f070036;
         public static final int top=0x7f070008;
         public static final int top_action_bar=0x7f07002b;
         public static final int up=0x7f07002c;
         public static final int useLogo=0x7f07000e;
         public static final int withText=0x7f070017;
-        public static final int workout_item_name=0x7f070078;
-        public static final int workout_list_loader=0x7f07006f;
-        public static final int workout_list_view=0x7f07006d;
-        public static final int workout_name=0x7f07006c;
-        public static final int workout_name_list=0x7f07006e;
+        public static final int workout_exercise_done=0x7f07006f;
+        public static final int workout_exercise_image=0x7f07006d;
+        public static final int workout_exercise_list=0x7f07007b;
+        public static final int workout_exercise_name=0x7f07006e;
+        public static final int workout_item_name=0x7f07007c;
+        public static final int workout_list_loader=0x7f070073;
+        public static final int workout_list_view=0x7f070071;
+        public static final int workout_name=0x7f070070;
+        public static final int workout_name_list=0x7f070072;
     }
     public static final class integer {
         /**  The maximum number of action buttons that should be permitted within
@@ -1578,14 +1582,15 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment=0x7f030027;
         public static final int drawer_first_item=0x7f030028;
         public static final int drawer_list_item=0x7f030029;
-        public static final int fragment_chat=0x7f03002a;
-        public static final int fragment_feedback=0x7f03002b;
-        public static final int fragment_main=0x7f03002c;
-        public static final int fragment_my_workouts=0x7f03002d;
-        public static final int fragment_profile=0x7f03002e;
-        public static final int fragment_workout=0x7f03002f;
-        public static final int support_simple_spinner_dropdown_item=0x7f030030;
-        public static final int workout_item=0x7f030031;
+        public static final int exercise_item=0x7f03002a;
+        public static final int fragment_chat=0x7f03002b;
+        public static final int fragment_feedback=0x7f03002c;
+        public static final int fragment_main=0x7f03002d;
+        public static final int fragment_my_workouts=0x7f03002e;
+        public static final int fragment_profile=0x7f03002f;
+        public static final int fragment_workout=0x7f030030;
+        public static final int support_simple_spinner_dropdown_item=0x7f030031;
+        public static final int workout_item=0x7f030032;
     }
     public static final class menu {
         public static final int main=0x7f0f0000;

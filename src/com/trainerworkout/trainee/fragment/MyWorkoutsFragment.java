@@ -83,7 +83,6 @@ public class MyWorkoutsFragment extends Fragment {
 			public void success(WorkoutsModel model, Response response) {
 				if(model.getStatus().equals("ok")){					
 					List<WorkoutHolderModel> workoutModels 	= deserializeWorkoutHolder(response);
-					
 					List<WorkoutModel> workouts = new ArrayList<WorkoutModel>();
 					try {
 						workouts = createAndReturnWorkoutsIfNotExist(workoutModels, DBUser.getId());
@@ -91,7 +90,6 @@ public class MyWorkoutsFragment extends Fragment {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
 					addWorkoutListToView(workouts);
 				}
 			}

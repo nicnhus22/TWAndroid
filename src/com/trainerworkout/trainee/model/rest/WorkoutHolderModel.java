@@ -16,16 +16,13 @@ public class WorkoutHolderModel {
 		this.exercises = exercises;
 	}
 
-
-
 	/**
 	 * @return the workout
 	 */
 	public WorkoutModel getWorkout() {
 		return workout;
 	}
-
-
+	
 
 	/**
 	 * @param workout the workout to set
@@ -33,7 +30,6 @@ public class WorkoutHolderModel {
 	public void setWorkout(WorkoutModel workout) {
 		this.workout = workout;
 	}
-
 
 
 	/**
