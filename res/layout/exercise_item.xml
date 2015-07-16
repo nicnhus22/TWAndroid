@@ -7,11 +7,17 @@
 
     <ImageView
         android:id="@+id/workout_exercise_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="false"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+	    android:scaleType="centerCrop"
+        android:maxHeight="70dp"
+        android:maxWidth="70dp"
+        android:minHeight="70dp"
+        android:minWidth="70dp"
         android:src="@drawable/ic_profile" />
 
     <TextView

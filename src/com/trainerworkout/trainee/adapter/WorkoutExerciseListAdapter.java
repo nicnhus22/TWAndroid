@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.trainerworkout.trainee.R;
 import com.trainerworkout.trainee.helper.DownloadSetImageTask;
+import com.trainerworkout.trainee.helper.DownloadSetImageTask.ImageType;
 import com.trainerworkout.trainee.model.drawer.NavDrawerFirstItem;
 import com.trainerworkout.trainee.model.rest.ExercisesModel;
 import com.trainerworkout.trainee.model.rest.WorkoutHolderModel;
@@ -61,9 +62,14 @@ public class WorkoutExerciseListAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.exercise_item, null);
         }
           
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.workout_exercise_name);
+        TextView 	txtTitle 	= (TextView) convertView.findViewById(R.id.workout_exercise_name);
+        ImageView 	exImage 	= (ImageView)convertView.findViewById(R.id.workout_exercise_image); 
         
+        // Set Exercise Name
         txtTitle.setText(exercisesItems.get(position).getName());
+        // Set Exercise Image
+        new DownloadSetImageTask(exImage, context, false, ImageType.MISSING_GENERAL)
+    		.execute(exercisesItems.get(position).getImage());
 		
 		return convertView;
 	}

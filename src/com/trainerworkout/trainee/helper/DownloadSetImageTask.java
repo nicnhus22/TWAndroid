@@ -1,6 +1,7 @@
 package com.trainerworkout.trainee.helper;
 
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,7 +17,8 @@ public class DownloadSetImageTask extends AsyncTask<String, Void, Bitmap> {
 	
 	private final String SERVER_ROOT = "http://staging.trainerworkout.com/";
 	
-	ImageView bmImage;
+	private final WeakReference<ImageView> bmImage;
+
 	Context context;
 	boolean rounded;
 	ImageType type;
@@ -27,7 +29,7 @@ public class DownloadSetImageTask extends AsyncTask<String, Void, Bitmap> {
 	}
 
 	public DownloadSetImageTask(ImageView bmImage, Context context, boolean rounded, ImageType type) {
-		this.bmImage = bmImage;
+		this.bmImage = new WeakReference<ImageView>(bmImage);
 		this.context = context;
 		this.rounded = rounded;
 		this.type = type;
@@ -53,9 +55,11 @@ public class DownloadSetImageTask extends AsyncTask<String, Void, Bitmap> {
 	protected void onPostExecute(Bitmap result) {
 		if(this.rounded){
 			RoundedImage roundedImage = new RoundedImage(result);
-			bmImage.setImageDrawable(roundedImage);
+			ImageView image = bmImage.get();
+			image.setImageDrawable(roundedImage);
 		} else {
-			bmImage.setImageBitmap(result);
+			ImageView image = bmImage.get();
+			image.setImageBitmap(result);
 		}
 	}
 	
