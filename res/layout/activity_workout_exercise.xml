@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_blue"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF" >
+
+        <TableRow>
+
+	      <ImageView
+	          android:id="@+id/workout_exercise_image_one"
+	          android:layout_width="0dip"
+	          android:layout_height="wrap_content"
+	          android:layout_weight="1"
+	          android:adjustViewBounds="true"
+	          android:scaleType="centerCrop"
+	          android:src="@drawable/tw" />
+	      
+	      <ImageView
+	          android:id="@+id/workout_exercise_image_two"
+	          android:layout_width="0dip"
+	          android:layout_height="wrap_content"
+	          android:layout_weight="1"
+	          android:adjustViewBounds="true"
+	          android:scaleType="centerCrop"
+	          android:src="@drawable/tw" />
+	          
+	    </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/workout_exercise_state_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:text="Exercise completed!"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#FFF" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp" >
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:maxHeight="20dp"
+                android:maxWidth="20dp"
+                android:minHeight="20dp"
+                android:minWidth="20dp"
+                android:adjustViewBounds="true"
+	          	android:scaleType="centerCrop"
+                android:src="@drawable/check_open" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/imageView1"
+                android:adjustViewBounds="true"
+                android:maxHeight="20dp"
+                android:maxWidth="20dp"
+                android:minHeight="20dp"
+                android:minWidth="20dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/check_done" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:maxHeight="20dp"
+                android:maxWidth="20dp"
+                android:minHeight="20dp"
+                android:minWidth="20dp"
+                android:adjustViewBounds="true"
+	          	android:scaleType="centerCrop"
+                android:layout_toRightOf="@+id/imageView1"
+                android:src="@drawable/check_open" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/skip_set_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/skip_set"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#FFF" />
+
+    </LinearLayout>
+
+</LinearLayout>

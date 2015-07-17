@@ -6,6 +6,8 @@ import java.lang.ref.WeakReference;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
@@ -53,14 +55,17 @@ public class DownloadSetImageTask extends AsyncTask<String, Void, Bitmap> {
 	}
 
 	protected void onPostExecute(Bitmap result) {
-		if(this.rounded){
-			RoundedImage roundedImage = new RoundedImage(result);
-			ImageView image = bmImage.get();
-			image.setImageDrawable(roundedImage);
-		} else {
-			ImageView image = bmImage.get();
-			image.setImageBitmap(result);
+		try {
+			if(this.rounded){
+				RoundedImage roundedImage = new RoundedImage(result);
+				ImageView image = bmImage.get();
+				image.setImageDrawable(roundedImage);
+			} else {
+				ImageView image = bmImage.get();
+				image.setImageBitmap(result);
+			}
+		}catch(Exception e){
+			// Do nothing
 		}
 	}
-	
 }

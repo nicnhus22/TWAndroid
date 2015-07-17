@@ -30,14 +30,17 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.trainerworkout.trainee.MainActivity;
 import com.trainerworkout.trainee.R;
+import com.trainerworkout.trainee.WorkoutActivity;
 import com.trainerworkout.trainee.adapter.WorkoutListAdapter;
 import com.trainerworkout.trainee.database.DatabaseHelper;
 import com.trainerworkout.trainee.gson.DeserializeWorkoutHolder;
 import com.trainerworkout.trainee.helper.Animations;
 import com.trainerworkout.trainee.helper.BackHandledFragment;
 import com.trainerworkout.trainee.helper.CurrentUser;
+import com.trainerworkout.trainee.helper.DownloadSetImageTask;
 import com.trainerworkout.trainee.helper.HttpClientSingleton;
 import com.trainerworkout.trainee.helper.SelectedWorkout;
+import com.trainerworkout.trainee.helper.DownloadSetImageTask.ImageType;
 import com.trainerworkout.trainee.model.rest.UserModel;
 import com.trainerworkout.trainee.model.rest.WorkoutHolderModel;
 import com.trainerworkout.trainee.model.rest.WorkoutModel;
@@ -116,6 +119,7 @@ public class MyWorkoutsFragment extends Fragment {
 		Animations.fadeView(workoutList);
     }
     
+    
     /**
      * @param response
      * @return
@@ -156,15 +160,10 @@ public class MyWorkoutsFragment extends Fragment {
 			
 			SelectedWorkout.setSelectedWorkout(workouts.get(position));
 			
-			Bundle bundle=new Bundle();
-			bundle.putInt("SELECTED_WORKOUT_ID", workouts.get(position).getId());
-			WorkoutFragment fragment = new WorkoutFragment();
-			fragment.setArguments(bundle);
-			
-			FragmentTransaction mFragmentTransaction = getFragmentManager()
-	                .beginTransaction();
-			mFragmentTransaction.addToBackStack(null)
-				.replace(R.id.frame_container, fragment).commit();
+			Intent workoutActivity = new Intent(getActivity(), WorkoutActivity.class);
+			workoutActivity.putExtra("SELECTED_WORKOUT_ID", workouts.get(position).getId());
+			workoutActivity.putExtra("SELECTED_WORKOUT_NAME", workouts.get(position).getName());
+			startActivity(workoutActivity);
 		}
     }
     

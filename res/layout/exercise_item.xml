@@ -27,9 +27,12 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/workout_exercise_image"
+        android:layout_toStartOf="@+id/workout_exercise_done"
         android:text="Bench Press"
+        android:fontFamily="sans-serif-light"
         android:textColor="#FFF"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:ellipsize="end" />
 
     <ImageView
         android:id="@+id/workout_exercise_done"

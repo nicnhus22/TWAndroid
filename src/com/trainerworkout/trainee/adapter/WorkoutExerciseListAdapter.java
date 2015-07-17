@@ -26,6 +26,7 @@ public class WorkoutExerciseListAdapter extends BaseAdapter {
 
 	private Context context;
     private List<ExercisesModel> exercisesItems;
+    private List<ImageView> exerciseImages;
 	
     /**
      * @param context
@@ -65,13 +66,17 @@ public class WorkoutExerciseListAdapter extends BaseAdapter {
         TextView 	txtTitle 	= (TextView) convertView.findViewById(R.id.workout_exercise_name);
         ImageView 	exImage 	= (ImageView)convertView.findViewById(R.id.workout_exercise_image); 
         
+        
         // Set Exercise Name
         txtTitle.setText(exercisesItems.get(position).getName());
         // Set Exercise Image
-        new DownloadSetImageTask(exImage, context, false, ImageType.MISSING_GENERAL)
-    		.execute(exercisesItems.get(position).getImage());
+//        new DownloadSetImageTask(exImage, context, false, ImageType.MISSING_GENERAL)
+//    		.execute(exercisesItems.get(position).getImage());
 		
 		return convertView;
 	}
 
+	public List<ImageView> getExerciseImages(){
+		return exerciseImages;
+	}
 }
